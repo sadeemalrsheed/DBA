@@ -7,14 +7,13 @@
     <style>
         body {
             font-family: 'Segoe UI', sans-serif;
-            background-color: #dbe5ea;
-            color: #0f4662;
+            background-color: #f0f4f7;
             margin: 0;
             padding: 0;
         }
 
         header {
-            background-color: #0f4662;
+            background-color: #1e3a5f;
             color: white;
             padding: 1rem;
             text-align: center;
@@ -24,9 +23,9 @@
             max-width: 1000px;
             margin: 2rem auto;
             background-color: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
         h2 {
@@ -38,26 +37,28 @@
             display: flex;
             flex-wrap: wrap;
             gap: 1rem;
-            justify-content: space-between;
             margin-bottom: 2rem;
         }
 
-        form input,
-        form select {
+        form input, form select {
+            flex: 1 1 48%;
             padding: 0.5rem;
-            border: 1px solid #7994a0;
-            border-radius: 6px;
-            flex: 1 1 45%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
         }
 
         form button {
-            padding: 0.5rem 1rem;
-            background-color: #0f4662;
+            flex: 1 1 100%;
+            padding: 0.6rem;
+            background-color: #1e3a5f;
             color: white;
             border: none;
-            border-radius: 6px;
+            border-radius: 5px;
             cursor: pointer;
-            flex: 1 1 100%;
+        }
+
+        form button:hover {
+            background-color: #163252;
         }
 
         table {
@@ -66,71 +67,62 @@
         }
 
         table thead {
-            background-color: #7994a0;
+            background-color: #1e3a5f;
             color: white;
         }
 
         table th, table td {
             padding: 0.75rem;
-            border: 1px solid #ccc;
+            border: 1px solid #ddd;
             text-align: center;
         }
 
         table tbody tr:nth-child(even) {
-            background-color: #f0f4f7;
+            background-color: #f5f9fc;
         }
 
-        a.delete {
+        a.edit, a.delete {
+            text-decoration: none;
+        }
+
+        a.edit i {
+            color: #2980b9;
+        }
+
+        a.delete i {
             color: #c0392b;
-            text-decoration: none;
-        }
-
-        a.back {
-            display: inline-block;
-            margin-top: 1rem;
-            color: #0f4662;
-            text-decoration: none;
-        }
-
-        a.back:hover {
-            text-decoration: underline;
         }
     </style>
 </head>
 <body>
     <header>
-        <h1><i class="fas fa-cogs"></i> Manage Products</h1>
+        <h1><i class="fas fa-box"></i> Manage Products</h1>
     </header>
 
     <div class="container">
-        <a class="back" href="/"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
-
         <h2>Add New Product</h2>
         <form method="POST" action="/add_product">
             <input type="text" name="name" placeholder="Product Name" required>
-            <input type="number" name="stock" placeholder="Stock" required>
-            <input type="number" name="price" placeholder="Price" step="0.01" required>
-        
             <select name="category" required>
                 <option value="">-- Select Category --</option>
                 <option value="Books">Books</option>
                 <option value="Clothing">Clothing</option>
                 <option value="Electronics">Electronics</option>
             </select>
-        
-            <button type="submit">Add Product</button>
+            <input type="number" name="stock" placeholder="Stock" required>
+            <input type="number" name="price" placeholder="Price" step="0.01" required>
+            <button type="submit"><i class="fas fa-plus"></i> Add Product</button>
         </form>
-        
-        
 
-        <h2>Products List</h2>
+        <h2>Product List</h2>
         <table>
             <thead>
                 <tr>
-                    <th>Product ID</th>
-                    <th>Product Category</th>
-                    <th>Product Name</th>
-                    <th>Product Price</th>
+                    <th>ID</th>
+                    <th>Category</th>
+                    <th>Name</th>
+                    <th>Stock</th>
+                    <th>Price</th>
                     <th>Edit</th>
                     <th>Delete</th>
                 </tr>
@@ -142,6 +134,7 @@
                     <td>{{ product[1] }}</td>
                     <td>{{ product[2] }}</td>
                     <td>{{ product[3] }}</td>
+                    <td>{{ product[4] }}</td>
                     <td><a class="edit" href="/edit_product/{{ product[0] }}"><i class="fas fa-edit"></i></a></td>
                     <td><a class="delete" href="/delete_product/{{ product[0] }}"><i class="fas fa-trash-alt"></i></a></td>
                 </tr>
