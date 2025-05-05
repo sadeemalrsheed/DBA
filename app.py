@@ -106,10 +106,16 @@ def edit_user(user_id):
         return redirect('/users')
 
     else:
-        cursor.execute("SELECT * FROM User WHERE User_ID = %s", (user_id,))
-        user = cursor.fetchone()
-        conn.close()
-        return render_template('edit_user.html', user=user)
+     cursor.execute("""
+        SELECT u.*, a.Admin_role 
+        FROM User u 
+        LEFT JOIN Admin a ON u.User_ID = a.User_ID 
+        WHERE u.User_ID = %s
+     """, (user_id,))
+     user = cursor.fetchone()
+     conn.close()
+     return render_template('edit_user.html', user=user)
+
 
 
 @app.route('/delete_user/<int:user_id>')
