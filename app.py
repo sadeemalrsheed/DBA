@@ -83,20 +83,33 @@ def edit_user(user_id):
         address = request.form['address']
         email = request.form['email']
         user_type = request.form['user_type']
+        admin_role = request.form.get('admin_role')
 
+        # Update the main User table
         cursor.execute("""
             UPDATE User SET Name=%s, Address=%s, Email=%s, User_type=%s
             WHERE User_ID=%s
         """, (name, address, email, user_type, user_id))
+
+        # Clean up the old subtable
+        cursor.execute("DELETE FROM Admin WHERE User_ID = %s", (user_id,))
+        cursor.execute("DELETE FROM Customer WHERE User_ID = %s", (user_id,))
+
+        # Insert into the correct subtable
+        if user_type == 'Admin':
+            cursor.execute("INSERT INTO Admin (User_ID, Admin_role) VALUES (%s, %s)", (user_id, admin_role or "Standard"))
+        elif user_type == 'Customer':
+            cursor.execute("INSERT INTO Customer (User_ID) VALUES (%s)", (user_id,))
+
         conn.commit()
         conn.close()
         return redirect('/users')
+
     else:
         cursor.execute("SELECT * FROM User WHERE User_ID = %s", (user_id,))
         user = cursor.fetchone()
         conn.close()
         return render_template('edit_user.html', user=user)
-
 
 
 @app.route('/delete_user/<int:user_id>')
