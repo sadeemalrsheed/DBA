@@ -12,40 +12,24 @@
             margin: 0;
             padding: 0;
         }
-
-        header {
-            background-color: #0f4662;
-            color: white;
-            padding: 1rem;
-            text-align: center;
-        }
-
         .container {
-            max-width: 600px;
-            margin: 2rem auto;
+            max-width: 500px;
+            margin: 5rem auto;
             background-color: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
-
-        h2 {
-            text-align: center;
-            margin-bottom: 1.5rem;
-        }
-
         form {
             display: flex;
             flex-direction: column;
             gap: 1rem;
         }
-
         input {
             padding: 0.5rem;
+            border-radius: 5px;
             border: 1px solid #7994a0;
-            border-radius: 6px;
         }
-
         button {
             padding: 0.5rem;
             background-color: #0f4662;
@@ -54,39 +38,22 @@
             border-radius: 6px;
             cursor: pointer;
         }
-
         a.back {
-            display: inline-block;
-            margin-top: 1rem;
-            color: #0f4662;
             text-decoration: none;
-        }
-
-        a.back:hover {
-            text-decoration: underline;
+            color: #0f4662;
+            display: inline-block;
+            margin-bottom: 1rem;
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1><i class="fas fa-edit"></i> Edit Phone Number</h1>
-    </header>
-
     <div class="container">
-        <a class="back" href="/phones"><i class="fas fa-arrow-left"></i> Back to Phone List</a>
-
-        <h2>Update Phone Number</h2>
+        <a class="back" href="/phones"><i class="fas fa-arrow-left"></i> Back</a>
+        <h2>Edit Phone Number</h2>
         <form method="POST">
-            <label>User ID:</label>
-            <input type="text" name="user_id" value="{{ user_id }}" readonly>
-
-            <label>Old Phone Number:</label>
-            <input type="text" value="{{ old_phone }}" readonly>
-
-            <label>New Phone Number:</label>
+            <label>Current Phone: {{ old_phone }}</label>
             <input type="text" name="new_phone" placeholder="Enter new phone number" required>
-
-            <button type="submit"><i class="fas fa-save"></i> Save Changes</button>
+            <button type="submit"><i class="fas fa-save"></i> Save</button>
         </form>
     </div>
 </body>
