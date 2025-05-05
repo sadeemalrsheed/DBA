@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage User Phone Numbers</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #dbe5ea;
+            color: #0f4662;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #0f4662;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 2rem;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+        }
+
+        form input,
+        form select {
+            padding: 0.5rem;
+            border: 1px solid #7994a0;
+            border-radius: 6px;
+            flex: 1 1 45%;
+        }
+
+        form button {
+            padding: 0.5rem 1rem;
+            background-color: #0f4662;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            flex: 1 1 100%;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table thead {
+            background-color: #7994a0;
+            color: white;
+        }
+
+        table th, table td {
+            padding: 0.75rem;
+            border: 1px solid #ccc;
+            text-align: center;
+        }
+
+        table tbody tr:nth-child(even) {
+            background-color: #f0f4f7;
+        }
+
+        a.delete {
+            color: #c0392b;
+            text-decoration: none;
+        }
+
+        a.back {
+            display: inline-block;
+            margin-top: 1rem;
+            color: #0f4662;
+            text-decoration: none;
+        }
+
+        a.back:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1><i class="fas fa-phone-alt"></i> Manage User Phone Numbers</h1>
+    </header>
+
+    <div class="container">
+        <a class="back" href="/"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+
+        <h2>Add New User Phone Number</h2>
+        <form method="POST" action="/add_phone">
+            <input type="number" name="user_id" placeholder="User ID" required>
+            <input type="text" name="phone_number" placeholder="Phone Number" required>
+            <button type="submit"><i class="fas fa-plus"></i> Add Phone Number</button>
+        </form>
+
+        <h2>User Phone Numbers List</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>User ID</th>
+                    <th>Phone Number</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for phone in phones %}
+                <tr>
+                    <td>{{ phone[0] }}</td>
+                    <td>{{ phone[1] }}</td>
+                    <a class="edit" href="/edit_phone/{{ phone[0] }}/{{ phone[1] }}"><i class="fas fa-edit"></i></a>
+                    <a class="delete" href="/delete_phone/{{ phone[0] }}/{{ phone[1] }}"><i class="fas fa-trash-alt"></i></a>
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

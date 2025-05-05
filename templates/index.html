@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            background-color: #dbe5ea;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #0f4662;
+        }
+
+        header {
+            background-color: #0f4662;
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 32px;
+        }
+
+        nav {
+            max-width: 700px;
+            margin: 40px auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        nav li {
+            margin: 20px 0;
+        }
+
+        nav a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-decoration: none;
+            background-color: #7994a0;
+            color: white;
+            padding: 14px 20px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 500;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        nav a:hover {
+            background-color: #0f4662;
+            transform: scale(1.03);
+        }
+
+        .icon {
+            font-size: 20px;
+        }
+
+        @media (max-width: 600px) {
+            nav a {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1><i class="fas fa-store icon"></i> Online Store </h1>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="/users"><i class="fas fa-users icon"></i> Users</a></li>
+            <li><a href="/phones"><i class="fas fa-phone icon"></i> User Phone Numbers</a></li>
+            <li><a href="/products"><i class="fas fa-box icon"></i> Products</a></li>
+            <li><a href="/orders"><i class="fas fa-shopping-cart icon"></i> Orders</a></li>
+            <li><a href="/receipts"><i class="fas fa-receipt icon"></i> Receipts</a></li>
+            <li><a href="/payments"><i class="fas fa-credit-card icon"></i> Payments</a></li>
+            <li><a href="/contains"><i class="fas fa-list icon"></i> Order Items</a></li>
+        </ul>
+    </nav>
+</body>
+</html>
