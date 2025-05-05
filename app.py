@@ -521,13 +521,14 @@ def delete_phone(user_id, phone):
 
 # ====== Order Items (Contains) ======
 @app.route('/contains')
-def list_contains():
+def show_contains():
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM Contains ORDER BY Order_ID")
-    items = cursor.fetchall()
+    cursor.execute("SELECT * FROM Contains")  # adjust if your table name differs
+    contains = cursor.fetchall()
     conn.close()
-    return render_template('contains.html', items=items)
+    return render_template('contains.html', contains=contains)
+
 
 @app.route('/add_contains', methods=['POST'])
 def add_contains():
