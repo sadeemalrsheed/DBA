@@ -8,36 +8,41 @@
         body {
             font-family: 'Segoe UI', sans-serif;
             background-color: #f0f4f7;
-            color: #1e3a5f;
             margin: 0;
             padding: 0;
         }
 
-        .container {
-            max-width: 600px;
-            margin: 3rem auto;
-            background-color: white;
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        header {
+            background-color: #1e3a5f;
+            color: white;
+            padding: 1rem;
+            text-align: center;
         }
 
-        h2 {
-            text-align: center;
-            margin-bottom: 1.5rem;
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
         form {
             display: flex;
-            flex-direction: column;
+            flex-wrap: wrap;
             gap: 1rem;
         }
 
-        form input,
-        form select {
-            padding: 0.6rem;
+        input, select {
+            flex: 1 1 48%;
+            padding: 0.5rem;
             border: 1px solid #ccc;
-            border-radius: 6px;
+            border-radius: 5px;
+        }
+
+        .category-fields {
+            width: 100%;
         }
 
         button {
@@ -45,41 +50,68 @@
             background-color: #1e3a5f;
             color: white;
             border: none;
-            border-radius: 6px;
+            border-radius: 5px;
             cursor: pointer;
+            margin-top: 1rem;
+            width: 100%;
         }
 
         button:hover {
             background-color: #163252;
         }
-
-        a.back {
-            display: inline-block;
-            margin-top: 1rem;
-            color: #1e3a5f;
-            text-decoration: none;
-        }
-
-        a.back:hover {
-            text-decoration: underline;
-        }
     </style>
 </head>
 <body>
+    <header>
+        <h1><i class="fas fa-edit"></i> Edit Product</h1>
+    </header>
     <div class="container">
-        <h2>Edit Product</h2>
         <form method="POST">
-            <input type="text" name="name" value="{{ product[2] }}" placeholder="Product Name" required>
-            <select name="category" required>
+            <input type="text" name="name" placeholder="Product Name" value="{{ product[2] }}" required>
+            <select name="category" id="category" required onchange="showCategoryFields()">
+                <option value="">-- Select Category --</option>
                 <option value="Books" {% if product[1] == 'Books' %}selected{% endif %}>Books</option>
                 <option value="Clothing" {% if product[1] == 'Clothing' %}selected{% endif %}>Clothing</option>
                 <option value="Electronics" {% if product[1] == 'Electronics' %}selected{% endif %}>Electronics</option>
             </select>
-            <input type="number" name="stock" value="{{ product[3] }}" placeholder="Stock" required>
-            <input type="number" name="price" value="{{ product[4] }}" placeholder="Price" step="0.01" required>
+            <input type="number" name="stock" placeholder="Stock" value="{{ product[3] }}" required>
+            <input type="number" step="0.01" name="price" placeholder="Price" value="{{ product[4] }}" required>
+
+            <!-- Book Fields -->
+            <div id="bookFields" class="category-fields" style="display:none;">
+                <input type="text" name="author" placeholder="Author" value="{{ book[1] if book }}">
+                <input type="text" name="publisher" placeholder="Publisher" value="{{ book[2] if book }}">
+                <input type="text" name="isbn" placeholder="ISBN" value="{{ book[3] if book }}">
+            </div>
+
+            <!-- Clothing Fields -->
+            <div id="clothingFields" class="category-fields" style="display:none;">
+                <input type="text" name="size" placeholder="Size" value="{{ clothing[1] if clothing }}">
+                <input type="text" name="material" placeholder="Material" value="{{ clothing[2] if clothing }}">
+                <input type="text" name="color" placeholder="Color" value="{{ clothing[3] if clothing }}">
+            </div>
+
+            <!-- Electronics Fields -->
+            <div id="electronicFields" class="category-fields" style="display:none;">
+                <input type="text" name="brand" placeholder="Brand" value="{{ electronic[1] if electronic }}">
+                <input type="text" name="warranty_period" placeholder="Warranty Period" value="{{ electronic[2] if electronic }}">
+            </div>
+
             <button type="submit"><i class="fas fa-save"></i> Save Changes</button>
         </form>
-        <a class="back" href="/products"><i class="fas fa-arrow-left"></i> Back to Products</a>
     </div>
+
+    <script>
+        function showCategoryFields() {
+            const cat = document.getElementById('category').value;
+            document.getElementById('bookFields').style.display = (cat === 'Books') ? 'block' : 'none';
+            document.getElementById('clothingFields').style.display = (cat === 'Clothing') ? 'block' : 'none';
+            document.getElementById('electronicFields').style.display = (cat === 'Electronics') ? 'block' : 'none';
+        }
+
+        // Call on page load
+        window.onload = showCategoryFields;
+    </script>
 </body>
 </html>
+

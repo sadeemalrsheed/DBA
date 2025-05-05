@@ -181,20 +181,78 @@ def edit_product(product_id):
         stock = int(request.form['stock'])
         price = float(request.form['price'])
 
-        cursor.execute("""
-            UPDATE Product 
-            SET Name=%s, Category=%s, Stock=%s, Price=%s 
-            WHERE Product_ID=%s
-        """, (name, category, stock, price, product_id))
+        # Get extra fields
+        author = request.form.get('author')
+        publisher = request.form.get('publisher')
+        isbn = request.form.get('isbn')
 
-        conn.commit()
-        conn.close()
-        return redirect('/products')
+        size = request.form.get('size')
+        material = request.form.get('material')
+        color = request.form.get('color')
+
+        brand = request.form.get('brand')
+        warranty_period = request.form.get('warranty_period')
+
+        try:
+            # Update Product table
+            cursor.execute("""
+                UPDATE Product SET Name=%s, Category=%s, Stock=%s, Price=%s
+                WHERE Product_ID=%s
+            """, (name, category, stock, price, product_id))
+
+            # Delete existing entry from all category tables
+            cursor.execute("DELETE FROM Books WHERE Product_ID = %s", (product_id,))
+            cursor.execute("DELETE FROM Clothing WHERE Product_ID = %s", (product_id,))
+            cursor.execute("DELETE FROM Electronics WHERE Product_ID = %s", (product_id,))
+
+            # Insert new category-specific data
+            if category == 'Books':
+                cursor.execute("""
+                    INSERT INTO Books (Product_ID, Author, Publisher, ISBN)
+                    VALUES (%s, %s, %s, %s)
+                """, (product_id, author, publisher, isbn))
+
+            elif category == 'Clothing':
+                cursor.execute("""
+                    INSERT INTO Clothing (Product_ID, Size, Material, Color)
+                    VALUES (%s, %s, %s, %s)
+                """, (product_id, size, material, color))
+
+            elif category == 'Electronics':
+                cursor.execute("""
+                    INSERT INTO electronic_devices (Product_ID, Brand, Warranty_Period)
+                    VALUES (%s, %s)
+                """, (product_id, brand, warranty_period))
+
+            conn.commit()
+            return redirect('/products')
+
+        except Exception as e:
+            conn.rollback()
+            return f"Error: {str(e)}"
+
+        finally:
+            conn.close()
+
     else:
-        cursor.execute("SELECT Product_ID, Category, Name, Stock, Price FROM Product WHERE Product_ID = %s", (product_id,))
+        # GET method: fetch product info
+        cursor.execute("SELECT * FROM Product WHERE Product_ID = %s", (product_id,))
         product = cursor.fetchone()
+
+        # Get extra info from category-specific table
+        cursor.execute("SELECT * FROM Books WHERE Product_ID = %s", (product_id,))
+        book = cursor.fetchone()
+
+        cursor.execute("SELECT * FROM Clothing WHERE Product_ID = %s", (product_id,))
+        clothing = cursor.fetchone()
+
+        cursor.execute("SELECT * FROM Electronics WHERE Product_ID = %s", (product_id,))
+        electronic = cursor.fetchone()
+
         conn.close()
-        return render_template('edit_product.html', product=product)
+
+        return render_template('edit_product.html', product=product, book=book, clothing=clothing, electronic=electronic)
+
 
 
 @app.route('/delete_product/<int:product_id>')
