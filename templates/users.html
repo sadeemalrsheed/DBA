@@ -103,7 +103,6 @@
         a.back:hover {
             text-decoration: underline;
         }
-
     </style>
 </head>
 <body>
@@ -121,16 +120,17 @@
             <input type="email" name="email" placeholder="Email" required>
             <input type="password" name="password" placeholder="Password" required>
             <input type="text" name="phone" placeholder="Phone Number" required>
+
             <select name="user_type" id="user_type" onchange="showAdminField()" required>
                 <option value="">-- Select User Type --</option>
                 <option value="Customer">Customer</option>
                 <option value="Admin">Admin</option>
             </select>
-            
-            <div id="admin-role-field" style="flex: 1 1 100%; display: none;">
+
+            <div id="admin-role-field" style="display: none; flex: 1 1 100%;">
                 <input type="text" name="admin_role" placeholder="Admin Role">
             </div>
-            
+
             <button type="submit"><i class="fas fa-plus"></i> Add User</button>
         </form>
 
@@ -177,17 +177,13 @@
             </tbody>
         </table>
     </div>
+
     <script>
         function showAdminField() {
             const userType = document.getElementById("user_type").value;
             const adminField = document.getElementById("admin-role-field");
-            if (userType === "Admin") {
-                adminField.style.display = "block";
-            } else {
-                adminField.style.display = "none";
-            }
+            adminField.style.display = userType === "Admin" ? "block" : "none";
         }
     </script>
-    
 </body>
 </html>
