@@ -121,6 +121,18 @@
 
             <button type="submit"><i class="fas fa-plus"></i> Add Product</button>
         </form>
+        <form method="GET" action="/products" style="margin-bottom: 1.5rem; display: flex; gap: 1rem;">
+            <select name="category" style="flex: 1; padding: 0.5rem; border-radius: 6px;">
+                <option value="">-- Filter by Category --</option>
+                <option value="Books">Books</option>
+                <option value="Clothing">Clothing</option>
+                <option value="Electronics">Electronics</option>
+            </select>
+            <button type="submit" style="padding: 0.5rem 1rem; border-radius: 6px; background-color: #1e3a5f; color: white; border: none; cursor: pointer;">
+                <i class="fas fa-search"></i> Filter
+            </button>
+        </form>
+        
 
         <h2>Product List</h2>
         <table>

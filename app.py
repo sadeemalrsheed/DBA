@@ -112,12 +112,21 @@ def delete_user(user_id):
 # ====== Products ======
 @app.route('/products')
 def list_products():
+    category = request.args.get('category')
+
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM Product")
+
+    if category in ['Books', 'Clothing', 'Electronics']:
+        cursor.execute("SELECT * FROM Product WHERE Category = %s", (category,))
+    else:
+        cursor.execute("SELECT * FROM Product")
+
     products = cursor.fetchall()
     conn.close()
-    return render_template('products.html', products=products)
+
+    return render_template('products.html', products=products, selected_category=category)
+
 
 @app.route('/add_product', methods=['POST'])
 def add_product():
