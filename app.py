@@ -18,12 +18,25 @@ def index():
 # ====== Users ======
 @app.route('/users')
 def list_users():
+    category = request.args.get('category')
     conn = get_db_connection()
     cursor = conn.cursor()
+
+    # Fetch all users
     cursor.execute("SELECT * FROM User")
     users = cursor.fetchall()
+
+    # Fetch products by category if selected
+    if category:
+        cursor.execute("SELECT * FROM Product WHERE Category = %s", (category,))
+        products = cursor.fetchall()
+    else:
+        products = []
+
     conn.close()
-    return render_template('users.html', users=users)
+    return render_template('users.html', users=users, products=products, selected_category=category)
+
+
 
 @app.route('/add_user', methods=['POST'])
 def add_user():
