@@ -266,13 +266,14 @@ def delete_product(product_id):
 
 # ====== Orders ======
 @app.route('/orders')
-def list_orders():
+def orders():
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM Orders")
+    cursor.execute("SELECT Order_ID, User_ID, Status, Order_date, Total_amount FROM Orders")
     orders = cursor.fetchall()
     conn.close()
     return render_template('orders.html', orders=orders)
+
 
 @app.route('/add_order', methods=['POST'])
 def add_order():

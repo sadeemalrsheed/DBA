@@ -85,6 +85,11 @@
             text-decoration: none;
         }
 
+        a.edit {
+            color: #2980b9;
+            text-decoration: none;
+        }
+
         a.back {
             display: inline-block;
             margin-top: 1rem;
@@ -108,7 +113,8 @@
         <h2>Add New Order</h2>
         <form method="POST" action="/add_order">
             <input type="number" name="user_id" placeholder="User ID" required>
-            <input type="text" name="order_date" placeholder="Order Date" required>
+            <input type="text" name="status" placeholder="Status" required>
+            <input type="date" name="order_date" required>
             <input type="number" name="total_amount" placeholder="Total Amount" required step="0.01">
             <button type="submit"><i class="fas fa-plus"></i> Add Order</button>
         </form>
@@ -119,8 +125,9 @@
                 <tr>
                     <th>Order ID</th>
                     <th>User ID</th>
+                    <th>Status</th>
                     <th>Order Date</th>
-                    <th>Total Price</th>
+                    <th>Total Amount</th>
                     <th>Edit</th>
                     <th>Delete</th>
                 </tr>
@@ -128,10 +135,11 @@
             <tbody>
                 {% for order in orders %}
                 <tr>
-                    <td>{{ order[0] }}</td>
-                    <td>{{ order[1] }}</td>
-                    <td>{{ order[2] }}</td>
-                    <td>{{ order[3] }}</td>
+                    <td>{{ order[0] }}</td> <!-- Order ID -->
+                    <td>{{ order[1] }}</td> <!-- User ID -->
+                    <td>{{ order[2] }}</td> <!-- Status -->
+                    <td>{{ order[3] }}</td> <!-- Order Date -->
+                    <td>{{ order[4] }}</td> <!-- Total Amount -->
                     <td><a class="edit" href="/edit_order/{{ order[0] }}"><i class="fas fa-edit"></i></a></td>
                     <td><a class="delete" href="/delete_order/{{ order[0] }}"><i class="fas fa-trash-alt"></i></a></td>
                 </tr>
@@ -141,3 +149,4 @@
     </div>
 </body>
 </html>
+
