@@ -41,27 +41,28 @@ def add_user():
     password = request.form['password']
     user_type = request.form['user_type']
     phone = request.form['phone']
+    admin_role = request.form.get('admin_role')  # ✅ Get from form (or None if not present)
 
     conn = get_db_connection()
     cursor = conn.cursor()
 
     try:
-        # Insert user (AUTO_INCREMENT ID + hashed password)
+        # Insert user with hashed password
         cursor.execute("""
             INSERT INTO User (Name, Address, Email, Password, User_type)
             VALUES (%s, %s, %s, SHA2(%s, 256), %s)
         """, (name, address, email, password, user_type))
 
-        user_id = cursor.lastrowid  # Get auto-generated ID
+        user_id = cursor.lastrowid
 
         # Insert phone number
         cursor.execute("INSERT INTO User_PhoneNum (User_ID, UPhone_num) VALUES (%s, %s)", (user_id, phone))
 
-        # Optional: Insert into Customer or Admin table based on user_type
+        # Insert into appropriate subtable
         if user_type == 'Customer':
             cursor.execute("INSERT INTO Customer (User_ID) VALUES (%s)", (user_id,))
         elif user_type == 'Admin':
-            cursor.execute("INSERT INTO Admin (User_ID, Admin_role) VALUES (%s, %s)", (user_id, 'Standard'))
+            cursor.execute("INSERT INTO Admin (User_ID, Admin_role) VALUES (%s, %s)", (user_id, admin_role or "Standard"))
 
         conn.commit()
         return redirect('/users')
