@@ -256,10 +256,12 @@ def edit_product(product_id):
                 """, (product_id, size, material, color))
 
             elif category == 'Electronics':
-                cursor.execute("""
-                    INSERT INTO electronic_devices (Product_ID, Brand, Warranty_Period)
-                    VALUES (%s, %s)
-                """, (product_id, brand, warranty_period))
+              cursor.execute("""
+        INSERT INTO electronic_devices (Product_ID, Brand, Warranty_Period)
+        VALUES (%s, %s, %s)
+    """, (product_id, brand, warranty_period))
+
+
 
             conn.commit()
             return redirect('/products')
