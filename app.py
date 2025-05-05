@@ -111,19 +111,64 @@ def list_products():
 
 @app.route('/add_product', methods=['POST'])
 def add_product():
-    category = request.form['category']
     name = request.form['name']
+    category = request.form['category']
     stock = int(request.form['stock'])
     price = float(request.form['price'])
+
+    # Extra fields based on category
+    author = request.form.get('author')
+    publisher = request.form.get('publisher')
+    isbn = request.form.get('isbn')
+
+    size = request.form.get('size')
+    material = request.form.get('material')
+    color = request.form.get('color')
+
+    brand = request.form.get('brand')
+    warranty_period = request.form.get('warranty_period')
+
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute(
-        "INSERT INTO Product (Category, Name, Stock, Price) VALUES (%s, %s, %s, %s)",
-        (category, name, stock, price)
-    )
-    conn.commit()
-    conn.close()
-    return redirect('/products')
+
+    try:
+        # 1. Insert into Product table
+        cursor.execute("""
+            INSERT INTO Product (Category, Name, Stock, Price)
+            VALUES (%s, %s, %s, %s)
+        """, (category, name, stock, price))
+
+        product_id = cursor.lastrowid
+
+        # 2. Insert into corresponding category table
+        if category == 'Books':
+            cursor.execute("""
+                INSERT INTO Books (Product_ID, Author, Publisher, ISBN)
+                VALUES (%s, %s, %s, %s)
+            """, (product_id, author, publisher, isbn))
+        
+        elif category == 'Clothing':
+            cursor.execute("""
+                INSERT INTO Clothing (Product_ID, Size, Material, Color)
+                VALUES (%s, %s, %s, %s)
+            """, (product_id, size, material, color))
+
+        elif category == 'Electronics':
+            cursor.execute("""
+                INSERT INTO electronic_devices (Product_ID, Brand, Warranty_Period)
+                VALUES (%s, %s)
+            """, (product_id, brand, warranty_period))
+
+        conn.commit()
+        return redirect('/products')
+    
+    except Exception as e:
+        conn.rollback()
+        return f"Error: {str(e)}"
+    
+    finally:
+        conn.close()
+
 
 @app.route('/edit_product/<int:product_id>', methods=['GET', 'POST'])
 def edit_product(product_id):
