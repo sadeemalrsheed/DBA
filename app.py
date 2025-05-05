@@ -203,7 +203,7 @@ def edit_product(product_id):
             # Delete existing entry from all category tables
             cursor.execute("DELETE FROM Books WHERE Product_ID = %s", (product_id,))
             cursor.execute("DELETE FROM Clothing WHERE Product_ID = %s", (product_id,))
-            cursor.execute("DELETE FROM Electronics WHERE Product_ID = %s", (product_id,))
+            cursor.execute("SELECT * FROM electronics_devices WHERE Product_ID = %s", (product_id,))
 
             # Insert new category-specific data
             if category == 'Books':
