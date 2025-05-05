@@ -291,21 +291,33 @@ def add_order():
     conn.close()
     return redirect('/orders')
 
-@app.route('/edit_order/<int:order_id>', methods=['POST'])
+@app.route('/edit_order/<int:order_id>', methods=['GET', 'POST'])
 def edit_order(order_id):
-    order_date = request.form['order_date']
-    user_id = int(request.form['user_id'])
-    status = request.form['status']
-    total_amount = float(request.form['total_amount'])
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute(
-        "UPDATE Orders SET Order_date=%s, User_ID=%s, Status=%s, Total_amount=%s WHERE Order_ID=%s",
-        (order_date, user_id, status, total_amount, order_id)
-    )
-    conn.commit()
+
+    if request.method == 'POST':
+        user_id = request.form['user_id']
+        status = request.form['status']
+        order_date = request.form['order_date']
+        total_amount = request.form['total_amount']
+
+        cursor.execute("""
+            UPDATE Orders 
+            SET User_ID = %s, Status = %s, Order_date = %s, Total_amount = %s 
+            WHERE Order_ID = %s
+        """, (user_id, status, order_date, total_amount, order_id))
+
+        conn.commit()
+        conn.close()
+        return redirect('/orders')
+
+    cursor.execute("SELECT * FROM Orders WHERE Order_ID = %s", (order_id,))
+    order = cursor.fetchone()
     conn.close()
-    return redirect('/orders')
+
+    return render_template('edit_order.html', order=order)
+
 
 @app.route('/delete_order/<int:order_id>')
 def delete_order(order_id):
