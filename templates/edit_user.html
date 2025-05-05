@@ -3,29 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <title>Edit User</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
     <h2>Edit User</h2>
     <form method="POST">
-        <label>Name:</label>
+        <label>Name:</label><br>
         <input type="text" name="name" value="{{ user[1] }}" required><br><br>
 
-        <label>Address:</label>
+        <label>Address:</label><br>
         <input type="text" name="address" value="{{ user[2] }}" required><br><br>
 
-        <label>Email:</label>
+        <label>Email:</label><br>
         <input type="email" name="email" value="{{ user[3] }}" required><br><br>
 
-        <label>User Type:</label>
+        <label>User Type:</label><br>
         <select name="user_type" required>
-            <option value="Customer" {% if user[5] = 'Customer' %}selected{% endif %}>Customer</option>
-            <option value="Admin" {% if user[5] = 'Admin' %}selected{% endif %}>Admin</option>
+            <option value="Customer" {% if user[5] == 'Customer' %}selected{% endif %}>Customer</option>
+            <option value="Admin" {% if user[5] == 'Admin' %}selected{% endif %}>Admin</option>
         </select><br><br>
 
-        <button type="submit">Update</button>
+        <button type="submit"><i class="fas fa-save"></i> Save Changes</button>
     </form>
-    <br>
-    <a href="/users">← Back to User List</a>
+
+    <a href="/users"><i class="fas fa-arrow-left"></i> Back</a>
 </body>
 </html>
 
