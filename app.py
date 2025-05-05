@@ -18,23 +18,20 @@ def index():
 # ====== Users ======
 @app.route('/users')
 def list_users():
-    category = request.args.get('category')
+    user_type = request.args.get('user_type')  # get selected user type from filter
+
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    # Fetch all users
-    cursor.execute("SELECT * FROM User")
-    users = cursor.fetchall()
-
-    # Fetch products by category if selected
-    if category:
-        cursor.execute("SELECT * FROM Product WHERE Category = %s", (category,))
-        products = cursor.fetchall()
+    if user_type in ['Customer', 'Admin']:
+        cursor.execute("SELECT * FROM User WHERE User_type = %s", (user_type,))
     else:
-        products = []
+        cursor.execute("SELECT * FROM User")  # show all users if no filter applied
 
+    users = cursor.fetchall()
     conn.close()
-    return render_template('users.html', users=users, products=products, selected_category=category)
+
+    return render_template('users.html', users=users, selected_user_type=user_type)
 
 
 
