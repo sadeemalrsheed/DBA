@@ -75,19 +75,19 @@ def edit_user(user_id):
         email = request.form['email']
         user_type = request.form['user_type']
 
-        cursor.execute(
-            "UPDATE User SET Name=%s, Address=%s, Email=%s, User_type=%s WHERE User_ID=%s",
-            (name, address, email, user_type, user_id)
-        )
+        cursor.execute("""
+            UPDATE User SET Name=%s, Address=%s, Email=%s, User_type=%s
+            WHERE User_ID=%s
+        """, (name, address, email, user_type, user_id))
         conn.commit()
         conn.close()
         return redirect('/users')
-
-    else:  # GET: Show form with current data
+    else:
         cursor.execute("SELECT * FROM User WHERE User_ID = %s", (user_id,))
         user = cursor.fetchone()
         conn.close()
         return render_template('edit_user.html', user=user)
+
 
 
 @app.route('/delete_user/<int:user_id>')
