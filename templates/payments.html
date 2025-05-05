@@ -110,14 +110,20 @@
         <a class="back" href="/"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
 
         <h2>Add New Payment</h2>
-        <form method="POST" action="/add_payment">
+        <form method="POST" action="/add_payment" style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between;">
             <input type="number" name="receipt_id" placeholder="Receipt ID" required>
             <input type="number" name="payment_id" placeholder="Payment ID" required>
             <input type="text" name="payment_status" placeholder="Status" required>
             <input type="text" name="payment_method" placeholder="Method" required>
             <input type="number" name="user_id" placeholder="User ID" required>
-            <button type="submit"><i class="fas fa-plus"></i> Add Payment</button>
+        
+            <div style="width: 100%; text-align: center;">
+                <button type="submit" style="padding: 0.6rem 2rem; background-color: #0f4662; color: white; border: none; border-radius: 6px; cursor: pointer;">
+                    <i class="fas fa-plus"></i> Add Payment
+                </button>
+            </div>
         </form>
+        
 
         <h2>Payments List</h2>
         <table>
