@@ -3,25 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <title>Edit Order Item</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
-        body { font-family: sans-serif; background: #eef2f5; padding: 20px; }
-        .form-box { background: #fff; padding: 20px; max-width: 500px; margin: auto; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-        input, button { display: block; width: 100%; margin: 10px 0; padding: 8px; }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #dbe5ea;
+            color: #0f4662;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #0f4662;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 3rem auto;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        form input {
+            padding: 0.6rem;
+            border: 1px solid #7994a0;
+            border-radius: 6px;
+        }
+
+        form button {
+            padding: 0.6rem;
+            background-color: #0f4662;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        form button:hover {
+            background-color: #08364c;
+        }
+
+        a.back {
+            display: inline-block;
+            margin-top: 1rem;
+            text-align: center;
+            color: #0f4662;
+            text-decoration: none;
+        }
+
+        a.back:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
-    <div class="form-box">
-        <h2>Edit Order Item</h2>
+    <header>
+        <h1><i class="fas fa-box"></i> Edit Order Item</h1>
+    </header>
+
+    <div class="container">
+        <h2>Update Quantity</h2>
         <form method="POST">
-            <label>Order ID:</label>
             <input type="text" name="order_id" value="{{ item[0] }}" readonly>
-            <label>Product ID:</label>
             <input type="text" name="product_id" value="{{ item[1] }}" readonly>
-            <label>Quantity:</label>
             <input type="number" name="quantity" value="{{ item[2] }}" required>
-            <button type="submit">Update</button>
+            <button type="submit"><i class="fas fa-save"></i> Save Changes</button>
         </form>
-        <a href="/contains">← Back</a>
+        <a class="back" href="/contains"><i class="fas fa-arrow-left"></i> Back to Order Items</a>
     </div>
 </body>
 </html>
+
