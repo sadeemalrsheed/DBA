@@ -546,18 +546,30 @@ def add_contains():
     conn.close()
     return redirect('/contains')
 
-@app.route('/edit_contains/<int:order_id>/<int:product_id>', methods=['POST'])
+@app.route('/edit_contains/<int:order_id>/<int:product_id>', methods=['GET', 'POST'])
 def edit_contains(order_id, product_id):
-    quantity = int(request.form['quantity'])
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute(
-        "UPDATE Contains SET Quantity=%s WHERE Order_ID=%s AND Product_ID=%s",
-        (quantity, order_id, product_id)
-    )
-    conn.commit()
+
+    if request.method == 'POST':
+        quantity = int(request.form['quantity'])
+        cursor.execute("""
+            UPDATE Contains 
+            SET Quantity = %s 
+            WHERE Order_ID = %s AND Product_ID = %s
+        """, (quantity, order_id, product_id))
+        conn.commit()
+        conn.close()
+        return redirect('/contains')
+
+    cursor.execute("""
+        SELECT * FROM Contains 
+        WHERE Order_ID = %s AND Product_ID = %s
+    """, (order_id, product_id))
+    item = cursor.fetchone()
     conn.close()
-    return redirect('/contains')
+    return render_template('edit_contains.html', item=item)
+
 
 @app.route('/delete_contains/<int:order_id>/<int:product_id>')
 def delete_contains(order_id, product_id):

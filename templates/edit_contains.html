@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Order Item</title>
+    <style>
+        body { font-family: sans-serif; background: #eef2f5; padding: 20px; }
+        .form-box { background: #fff; padding: 20px; max-width: 500px; margin: auto; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        input, button { display: block; width: 100%; margin: 10px 0; padding: 8px; }
+    </style>
+</head>
+<body>
+    <div class="form-box">
+        <h2>Edit Order Item</h2>
+        <form method="POST">
+            <label>Order ID:</label>
+            <input type="text" name="order_id" value="{{ item[0] }}" readonly>
+            <label>Product ID:</label>
+            <input type="text" name="product_id" value="{{ item[1] }}" readonly>
+            <label>Quantity:</label>
+            <input type="number" name="quantity" value="{{ item[2] }}" required>
+            <button type="submit">Update</button>
+        </form>
+        <a href="/contains">← Back</a>
+    </div>
+</body>
+</html>
