@@ -153,7 +153,7 @@ def add_product():
                 VALUES (%s, %s, %s, %s)
             """, (product_id, size, material, color))
 
-        elif category == 'Electronics':
+        elif category == 'electronic_devices':
             cursor.execute("""
                 INSERT INTO electronic_devices (Product_ID, Brand, Warranty_Period)
                 VALUES (%s, %s)
