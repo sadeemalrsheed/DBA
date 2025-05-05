@@ -416,20 +416,32 @@ def add_payment():
     conn.close()
     return redirect('/payments')
 
-@app.route('/edit_payment/<int:receipt_id>/<int:payment_id>', methods=['POST'])
+@app.route('/edit_payment/<int:receipt_id>/<int:payment_id>', methods=['GET', 'POST'])
 def edit_payment(receipt_id, payment_id):
-    payment_status = request.form['payment_status']
-    payment_method = request.form['payment_method']
-    user_id = int(request.form['user_id'])
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute(
-        "UPDATE Payment SET Payment_status=%s, Payment_method=%s, User_ID=%s WHERE Receipt_ID=%s AND Payment_ID=%s",
-        (payment_status, payment_method, user_id, receipt_id, payment_id)
-    )
-    conn.commit()
+
+    if request.method == 'POST':
+        payment_status = request.form['payment_status']
+        payment_method = request.form['payment_method']
+        user_id = request.form['user_id']
+
+        cursor.execute("""
+            UPDATE Payment
+            SET Payment_status = %s, Payment_method = %s, User_ID = %s
+            WHERE Receipt_ID = %s AND Payment_ID = %s
+        """, (payment_status, payment_method, user_id, receipt_id, payment_id))
+
+        conn.commit()
+        conn.close()
+        return redirect('/payments')
+
+    cursor.execute("SELECT * FROM Payment WHERE Receipt_ID = %s AND Payment_ID = %s", (receipt_id, payment_id))
+    payment = cursor.fetchone()
     conn.close()
-    return redirect('/payments')
+
+    return render_template('edit_payment.html', payment=payment)
+
 
 @app.route('/delete_payment/<int:receipt_id>/<int:payment_id>')
 def delete_payment(receipt_id, payment_id):
