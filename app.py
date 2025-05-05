@@ -83,7 +83,7 @@ def edit_user(user_id):
         conn.close()
         return redirect('/users')
 
-    else:  # GET request to show the form
+    else:  # GET: Show form with current data
         cursor.execute("SELECT * FROM User WHERE User_ID = %s", (user_id,))
         user = cursor.fetchone()
         conn.close()
