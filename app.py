@@ -33,8 +33,6 @@ def list_users():
 
     return render_template('users.html', users=users, selected_user_type=user_type)
 
-
-
 @app.route('/add_user', methods=['POST'])
 def add_user():
     name = request.form['name']
