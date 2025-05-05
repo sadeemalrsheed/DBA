@@ -64,21 +64,31 @@ def add_user():
         conn.close()
 
 
-@app.route('/edit_user/<int:user_id>', methods=['POST'])
+@app.route('/edit_user/<int:user_id>', methods=['GET', 'POST'])
 def edit_user(user_id):
-    name = request.form['name']
-    address = request.form['address']
-    email = request.form['email']
-    user_type = request.form['user_type']
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute(
-        "UPDATE User SET Name=%s, Address=%s, Email=%s, User_type=%s WHERE User_ID=%s",
-        (name, address, email, user_type, user_id)
-    )
-    conn.commit()
-    conn.close()
-    return redirect('/users')
+
+    if request.method == 'POST':
+        name = request.form['name']
+        address = request.form['address']
+        email = request.form['email']
+        user_type = request.form['user_type']
+
+        cursor.execute(
+            "UPDATE User SET Name=%s, Address=%s, Email=%s, User_type=%s WHERE User_ID=%s",
+            (name, address, email, user_type, user_id)
+        )
+        conn.commit()
+        conn.close()
+        return redirect('/users')
+
+    else:  # GET request to show the form
+        cursor.execute("SELECT * FROM User WHERE User_ID = %s", (user_id,))
+        user = cursor.fetchone()
+        conn.close()
+        return render_template('edit_user.html', user=user)
+
 
 @app.route('/delete_user/<int:user_id>')
 def delete_user(user_id):
