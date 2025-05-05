@@ -124,20 +124,19 @@
             </thead>
             <tbody>
                 {% for phone in phones %}
-                <tr>
-                    <td>{{ phone[0] }}</td>
-                    <td>{{ phone[1] }}</td>
-                    <td>
-                        <a class="edit" href="/edit_phone/{{ phone[0] }}/{{ phone[1] }}">
+                <td>
+                    <form method="POST" action="/edit_phone/{{ phone[0] }}/{{ phone[1] }}" style="display:inline;">
+                        <button type="submit" class="edit" style="background:none; border:none; cursor:pointer;">
                             <i class="fas fa-edit"></i>
-                        </a>
-                    </td>
-                    <td>
-                        <a class="delete" href="/delete_phone/{{ phone[0] }}/{{ phone[1] }}">
-                            <i class="fas fa-trash-alt"></i>
-                        </a>
-                    </td>
-                </tr>
+                        </button>
+                    </form>
+                </td>
+                <td>
+                    <a class="delete" href="/delete_phone/{{ phone[0] }}/{{ phone[1] }}">
+                        <i class="fas fa-trash-alt"></i>
+                    </a>
+                </td>
+                
                 
                 {% endfor %}
             </tbody>

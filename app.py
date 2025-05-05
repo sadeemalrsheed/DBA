@@ -328,18 +328,22 @@ def add_phone():
     conn.close()
     return redirect('/phones')
 
-@app.route('/edit_phone/<int:user_id>/<phone>', methods=['POST'])
-def edit_phone(user_id, phone):
-    new_phone = request.form['new_phone']
+@app.route('/edit_phone/<int:user_id>/<phone_num>', methods=['GET', 'POST'])
+def edit_phone(user_id, phone_num):
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute(
-        "UPDATE User_PhoneNum SET UPhone_num=%s WHERE User_ID=%s AND UPhone_num=%s",
-        (new_phone, user_id, phone)
-    )
-    conn.commit()
-    conn.close()
-    return redirect('/phones')
+
+    if request.method == 'POST':
+        # Show the edit form with current phone number
+        cursor.execute("SELECT * FROM User_PhoneNum WHERE User_ID = %s AND UPhone_num = %s", (user_id, phone_num))
+        phone_data = cursor.fetchone()
+        conn.close()
+        return render_template("edit_phone.html", phone=phone_data)
+
+    elif request.method == 'GET':
+        # Optional: handle GET differently if needed
+        return redirect('/phones')
+
 
 @app.route('/delete_phone/<int:user_id>/<phone>')
 def delete_phone(user_id, phone):
