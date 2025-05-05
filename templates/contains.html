@@ -130,8 +130,8 @@
                     <td>{{ order_item[0] }}</td>
                     <td>{{ order_item[1] }}</td>
                     <td>{{ order_item[2] }}</td>
-                    <td><a class="edit" href="/edit_contains/{{ order_item[0] }}"><i class="fas fa-edit"></i></a></td>
-                    <td><a class="delete" href="/delete_contains/{{ order_item[0] }}"><i class="fas fa-trash-alt"></i></a></td>
+                    <td><a class="edit" href="/edit_contains/{{ order_item[0] }}/{{ order_item[1] }}"><i class="fas fa-edit"></i></a></td>
+                    <td><a class="delete" href="/delete_contains/{{ order_item[0] }}/{{ order_item[1] }}"><i class="fas fa-trash-alt"></i></a></td>
                 </tr>
                 {% endfor %}
             </tbody>
