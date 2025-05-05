@@ -72,7 +72,7 @@
                 <option value="">-- Select Category --</option>
                 <option value="Books" {% if product[1] == 'Books' %}selected{% endif %}>Books</option>
                 <option value="Clothing" {% if product[1] == 'Clothing' %}selected{% endif %}>Clothing</option>
-                <option value="Electronics" {% if product[1] == 'Electronics' %}selected{% endif %}>Electronics</option>
+                <option value="Electronics" {% if product[1] == 'electronic_devices' %}selected{% endif %}>Electronics</option>
             </select>
             <input type="number" name="stock" placeholder="Stock" value="{{ product[3] }}" required>
             <input type="number" step="0.01" name="price" placeholder="Price" value="{{ product[4] }}" required>
