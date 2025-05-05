@@ -127,10 +127,18 @@
                 <tr>
                     <td>{{ phone[0] }}</td>
                     <td>{{ phone[1] }}</td>
-                    <a class="edit" href="/edit_phone/{{ phone[0] }}/{{ phone[1] }}"><i class="fas fa-edit"></i></a>
-                    <a class="delete" href="/delete_phone/{{ phone[0] }}/{{ phone[1] }}"><i class="fas fa-trash-alt"></i></a>
-
+                    <td>
+                        <a class="edit" href="/edit_phone/{{ phone[0] }}/{{ phone[1] }}">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                    </td>
+                    <td>
+                        <a class="delete" href="/delete_phone/{{ phone[0] }}/{{ phone[1] }}">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
+                    </td>
                 </tr>
+                
                 {% endfor %}
             </tbody>
         </table>
