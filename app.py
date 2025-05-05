@@ -125,21 +125,32 @@ def add_product():
     conn.close()
     return redirect('/products')
 
-@app.route('/edit_product/<int:product_id>', methods=['POST'])
+@app.route('/edit_product/<int:product_id>', methods=['GET', 'POST'])
 def edit_product(product_id):
-    category = request.form['category']
-    name = request.form['name']
-    stock = int(request.form['stock'])
-    price = float(request.form['price'])
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute(
-        "UPDATE Product SET Category=%s, Name=%s, Stock=%s, Price=%s WHERE Product_ID=%s",
-        (category, name, stock, price, product_id)
-    )
-    conn.commit()
-    conn.close()
-    return redirect('/products')
+
+    if request.method == 'POST':
+        name = request.form['name']
+        category = request.form['category']
+        stock = int(request.form['stock'])
+        price = float(request.form['price'])
+
+        cursor.execute("""
+            UPDATE Product 
+            SET Name=%s, Category=%s, Stock=%s, Price=%s 
+            WHERE Product_ID=%s
+        """, (name, category, stock, price, product_id))
+
+        conn.commit()
+        conn.close()
+        return redirect('/products')
+    else:
+        cursor.execute("SELECT Product_ID, Category, Name, Stock, Price FROM Product WHERE Product_ID = %s", (product_id,))
+        product = cursor.fetchone()
+        conn.close()
+        return render_template('edit_product.html', product=product)
+
 
 @app.route('/delete_product/<int:product_id>')
 def delete_product(product_id):

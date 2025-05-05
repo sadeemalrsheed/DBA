@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Product</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f0f4f7;
+            color: #1e3a5f;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 3rem auto;
+            background-color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        form input,
+        form select {
+            padding: 0.6rem;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        button {
+            padding: 0.6rem;
+            background-color: #1e3a5f;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #163252;
+        }
+
+        a.back {
+            display: inline-block;
+            margin-top: 1rem;
+            color: #1e3a5f;
+            text-decoration: none;
+        }
+
+        a.back:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Edit Product</h2>
+        <form method="POST">
+            <input type="text" name="name" value="{{ product[2] }}" placeholder="Product Name" required>
+            <select name="category" required>
+                <option value="Books" {% if product[1] == 'Books' %}selected{% endif %}>Books</option>
+                <option value="Clothing" {% if product[1] == 'Clothing' %}selected{% endif %}>Clothing</option>
+                <option value="Electronics" {% if product[1] == 'Electronics' %}selected{% endif %}>Electronics</option>
+            </select>
+            <input type="number" name="stock" value="{{ product[3] }}" placeholder="Stock" required>
+            <input type="number" name="price" value="{{ product[4] }}" placeholder="Price" step="0.01" required>
+            <button type="submit"><i class="fas fa-save"></i> Save Changes</button>
+        </form>
+        <a class="back" href="/products"><i class="fas fa-arrow-left"></i> Back to Products</a>
+    </div>
+</body>
+</html>
