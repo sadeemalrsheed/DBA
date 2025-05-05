@@ -103,14 +103,19 @@
         <h2>Add New Product</h2>
         <form method="POST" action="/add_product">
             <input type="text" name="name" placeholder="Product Name" required>
-            <select name="category" required>
+
+            <select name="category" id="category" onchange="updateExtraFields()" required>
                 <option value="">-- Select Category --</option>
                 <option value="Books">Books</option>
                 <option value="Clothing">Clothing</option>
                 <option value="Electronics">Electronics</option>
             </select>
+
             <input type="number" name="stock" placeholder="Stock" required>
             <input type="number" name="price" placeholder="Price" step="0.01" required>
+
+            <div id="extra-fields" style="flex: 1 1 100%; display: flex; flex-wrap: wrap; gap: 1rem;"></div>
+
             <button type="submit"><i class="fas fa-plus"></i> Add Product</button>
         </form>
 
@@ -142,5 +147,33 @@
             </tbody>
         </table>
     </div>
+
+    <script>
+        function updateExtraFields() {
+            const category = document.getElementById('category').value;
+            const container = document.getElementById('extra-fields');
+            container.innerHTML = '';
+
+            if (category === 'Books') {
+                container.innerHTML = `
+                    <input type="text" name="author" placeholder="Author" required>
+                    <input type="text" name="publisher" placeholder="Publisher" required>
+                    <input type="text" name="isbn" placeholder="ISBN" required>
+                `;
+            } else if (category === 'Clothing') {
+                container.innerHTML = `
+                    <input type="text" name="size" placeholder="Size" required>
+                    <input type="text" name="material" placeholder="Material" required>
+                    <input type="text" name="color" placeholder="Color" required>
+                `;
+            } else if (category === 'Electronics') {
+                container.innerHTML = `
+                    <input type="text" name="brand" placeholder="Brand" required>
+                    <input type="text" name="warranty_period" placeholder="Warranty Period" required>
+                `;
+            }
+        }
+    </script>
 </body>
 </html>
+
