@@ -316,17 +316,25 @@ def list_phones():
 
 @app.route('/add_phone', methods=['POST'])
 def add_phone():
-    user_id = int(request.form['user_id'])
-    phone = request.form['phone']
+    user_id = request.form['user_id']
+    phone_number = request.form['phone_number']  # match name in <input name="phone_number">
+
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute(
-        "INSERT INTO User_PhoneNum (User_ID, UPhone_num) VALUES (%s, %s)",
-        (user_id, phone)
-    )
-    conn.commit()
-    conn.close()
-    return redirect('/phones')
+
+    try:
+        cursor.execute("""
+            INSERT INTO User_PhoneNum (User_ID, UPhone_num)
+            VALUES (%s, %s)
+        """, (user_id, phone_number))
+        conn.commit()
+        return redirect('/phones')
+    except Exception as e:
+        conn.rollback()
+        return f"Error: {str(e)}"
+    finally:
+        conn.close()
+
 
 @app.route('/edit_phone/<int:user_id>/<phone>', methods=['GET', 'POST'])
 def edit_phone(user_id, phone):
