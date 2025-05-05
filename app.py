@@ -353,20 +353,32 @@ def add_receipt():
     conn.close()
     return redirect('/receipts')
 
-@app.route('/edit_receipt/<int:receipt_id>', methods=['POST'])
+@app.route('/edit_receipt/<int:receipt_id>', methods=['GET', 'POST'])
 def edit_receipt(receipt_id):
-    order_id = int(request.form['order_id'])
-    total_amount = float(request.form['total_amount'])
-    receipt_date = request.form['receipt_date']
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute(
-        "UPDATE Receipt SET Order_ID=%s, Total_amount=%s, Receipt_date=%s WHERE Receipt_ID=%s",
-        (order_id, total_amount, receipt_date, receipt_id)
-    )
-    conn.commit()
+
+    if request.method == 'POST':
+        order_id = request.form['order_id']
+        receipt_date = request.form['receipt_date']
+        receipt_number = request.form['receipt_number']
+
+        cursor.execute("""
+            UPDATE Receipt
+            SET Order_ID = %s, Receipt_date = %s, Receipt_number = %s
+            WHERE Receipt_ID = %s
+        """, (order_id, receipt_date, receipt_number, receipt_id))
+
+        conn.commit()
+        conn.close()
+        return redirect('/receipts')
+
+    cursor.execute("SELECT * FROM Receipt WHERE Receipt_ID = %s", (receipt_id,))
+    receipt = cursor.fetchone()
     conn.close()
-    return redirect('/receipts')
+
+    return render_template('edit_receipt.html', receipt=receipt)
+
 
 @app.route('/delete_receipt/<int:receipt_id>')
 def delete_receipt(receipt_id):
